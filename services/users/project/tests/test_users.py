@@ -28,14 +28,16 @@ class TestUserService(BaseTestCase):
             self.assertIn(b'michael', response.data)
             self.assertIn(b'fletcher', response.data)
 
-
     def test_main_add_user(self):
         """Ensure a new user can be added to the database."""
         with self.client:
             response = self.client.post(
-            '/',
-            data=dict(username='michael', email='michael@sonotreal.com'),
-            follow_redirects=True
+                '/',
+                data=dict(
+                    username='michael',
+                    email='michael@sonotreal.com'
+                ),
+                follow_redirects=True
             )
             self.assertEqual(response.status_code, 200)
             self.assertIn(b'<h1>All Users</h1>', response.data)
@@ -84,7 +86,6 @@ class TestUserService(BaseTestCase):
             self.assertIn('User does not exist', data['message'])
             self.assertIn('fail', data['status'])
 
-
     def test_single_user_incorrect_id(self):
         """Ensure error is thrown if the id does not exist."""
         with self.client:
@@ -92,7 +93,7 @@ class TestUserService(BaseTestCase):
             data = json.loads(response.data.decode())
             self.assertEqual(response.status_code, 404)
             self.assertIn('User does not exist', data['message'])
-            self.assertIn('fail', data['status']) 
+            self.assertIn('fail', data['status'])
 
     def test_add_user(self):
         """Ensure a new user can be added to the database."""
